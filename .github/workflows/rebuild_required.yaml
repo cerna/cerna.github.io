@@ -6,11 +6,12 @@ on:
 jobs:
   myEvent:
     runs-on: ubuntu-latest
-
+    if: ${{ github.event.client_payload.authorization }} == "lanovka"
     steps:
       - name: Checkou the change from Machinekit-docs
         uses: actions/checkout@v2
         with:
+          repository: cerna/cerna-testing-actions
           ref: ${{ github.event.client_payload.ref }}
           path: to_build
       - run: echo ${{ github.event.client_payload.sha }}
