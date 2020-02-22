@@ -34,7 +34,7 @@ jobs:
       # Running the commands in ubuntu-master and not in Docker container because
       # of the age of the container -> It cannot be even build anymore
       - name: Run a Jekyll builder
-        run: docker run -v $(pwd)/main-cat:/work haberlerm/docker-jekyll-asciidoctor jekyll build --verbose --trace --config _config.yml,_config_devel.yml
+        run: docker run -v $(pwd)/to_build:/work haberlerm/docker-jekyll-asciidoctor jekyll build --verbose --trace --config _config.yml,_config_devel.yml
 
       - name: Print newly created files
         run: ls -R to_build/_site -print1
