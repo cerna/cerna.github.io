@@ -27,8 +27,8 @@ jobs:
       - name: Get last commit author
         run: |
           cd to_build
-          echo ::set-env name=authormail::$(git log --format='%ae' -n 1 ${{ github.event.after }})
-          echo ::set-env name=authorname::$(git log --format='%an' -n 1 ${{ github.event.after }})
+          echo ::set-env name=authormail::$(git log --format='%ae' -n 2 ${{ github.event.after }})
+          echo ::set-env name=authorname::$(git log --format='%an' -n 2 ${{ github.event.after }})
           cd ..
 
       # Running the commands in ubuntu-master and not in Docker container because
