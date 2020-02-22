@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Test egibility to tun
         run: |
-          if [[ "${{ secrets.KEYCODE}}x" == ${{ github.event.client_payload.authorization }}x" ]]; then
+          if [ "${{ secrets.KEYCODE}}x" = ${{ github.event.client_payload.authorization }}x" ]; then
             echo "Authorized to proceed."
           else
             echo "Authorization failed."
