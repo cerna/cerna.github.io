@@ -1,4 +1,5 @@
 name: Rebuild request
+
 on:
   repository_dispatch:
     types: [rebuild-site-now]
