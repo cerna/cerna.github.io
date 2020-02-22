@@ -7,8 +7,8 @@ on:
 jobs:
   buildMachinekitSite:
     env:
-      SECRETAUTHORIZATION: ${{ github.event.client_payload.authorization }}
-    if: $SECRETAUTHORIZATION == "lanovka"
+      keycode: github.event.client_payload.authorization 
+    if: $keycode == "lanovka"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the change from Machinekit-docs
