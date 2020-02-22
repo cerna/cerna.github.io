@@ -4,14 +4,19 @@ on:
   repository_dispatch:
     types: [rebuild-site-now]
 
-env:
-  KEYCODE: lanovka 
-
 jobs:
   buildMachinekitSite:
-    if: format('{{{0}{1}}}', ${{ secrets.KRYCODE }}, "x") == "${{ github.event.client_payload.authorization }}x"
     runs-on: ubuntu-latest
     steps:
+      - name: Test egibility to tun
+        run: |
+          if [[ "${{ secrets.KEYCODE}}x" == ${{ github.event.client_payload.authorization }}x" ]]; then
+          echo "Authorized to proceed."
+          else
+          echo "Authorization failed."
+          exit 1
+          fi
+
       - name: Checkout the change from Machinekit-docs
         uses: actions/checkout@v2
         with:
