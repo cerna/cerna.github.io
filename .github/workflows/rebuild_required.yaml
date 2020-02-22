@@ -76,7 +76,7 @@ jobs:
           echo "Author's name for the commit set to $authorname"
           echo "Author's mail for the commit set to $authormail"
           git add --all
-          git commit -m "PULL request ID ${{ github.event.pull_request.id }}, URL ${{ github.event.pull_request.url }}, SHA ${{ github.event.pull_request.head.sha }} "
+          git commit -m "SHA causing build ${{ github.event.client_payload.SHA }}"
           cd ..
 
       - name: Push changes to master branch
