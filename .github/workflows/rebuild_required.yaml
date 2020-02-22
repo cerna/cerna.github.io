@@ -70,6 +70,13 @@ jobs:
           git commit -m "PULL request ID ${{ github.event.pull_request.id }}, URL ${{ github.event.pull_request.url }}, SHA ${{ github.event.pull_request.head.sha }} "
           cd ..
 
+      - name: Rebase repository as a last thing before Push
+        run: |
+          cd target
+          git fetch origin master
+          git rebase origin/master
+          cd ..
+
       - name: Push changes to master branch
         uses: ad-m/github-push-action@master
         with:
