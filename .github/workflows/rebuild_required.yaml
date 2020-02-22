@@ -4,11 +4,12 @@ on:
   repository_dispatch:
     types: [rebuild-site-now]
 
+env:
+  KEYCODE: "lanovka" 
+
 jobs:
   buildMachinekitSite:
-    env:
-      keycode: github.event.client_payload.authorization 
-    if: github.event.client_payload.authorization == "lanovka"
+    if: github.event.client_payload.authorization == env.KEYCODE
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the change from Machinekit-docs
