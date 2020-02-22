@@ -9,7 +9,7 @@ env:
 
 jobs:
   buildMachinekitSite:
-    if: github.event.client_payload.authorization == env.KEYCODE
+    if: github.event.client_payload.authorization == 'lanovka'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the change from Machinekit-docs
