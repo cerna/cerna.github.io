@@ -8,7 +8,7 @@ jobs:
   buildMachinekitSite:
     runs-on: ubuntu-latest
     steps:
-      - name: Test egibility to tun
+      - name: Test eligibility to tun
         run: |
           if [ "${{ secrets.KEYCODE}}x" = "${{ github.event.client_payload.authorization }}x" ]; then
             echo "Authorized to proceed."
@@ -25,29 +25,36 @@ jobs:
           path: to_build
           fetch-depth: '5'
 
-      - name: Git SHA on which is the build requested
+      - name: Git SHA on which the build is requested
         run: echo ${{ github.event.client_payload.sha }}
 
-      - name: Checkout this repository (GP)
+      - name: Checkout this repository
         uses: actions/checkout@v2
         with:
           ref: master
           path: target
-    
+
+      - name: Git log of repository on which the build is requested
+        run: git log
+        working-directory: ./to_build          
+
       - name: Get last commit author
         run: |
+          echo "###########################################################"
+          echo "# Commit which will be used for mining of the credentials #"
+          echo "###########################################################"
+          git log -n 2
           echo ::set-env name=authormail::$(git log --format='%ae' -n 2 ${{ github.event.after }})
           echo ::set-env name=authorname::$(git log --format='%an' -n 2 ${{ github.event.after }})
         working-directory: ./to_build
 
-      - name: Git log
-        run: git log
-        working-directory: ./to_build
-      
-      - name : GITHUB CONTEXT
-        env: 
-          GITHUB_CONTEXT: ${{ toJson(github) }} 
-        run: echo "$GITHUB_CONTEXT"
+      - name: Set up credentials for the new commit
+        run: |
+          git config --local user.email "$authormail"
+          git config --local user.name "$authorname"
+          echo "Author's name for the commit set to $authorname"
+          echo "Author's mail for the commit set to $authormail"
+        working-directory: ./target
 
       # Running the commands in ubuntu-master and not in Docker container because
       # of the age of the container -> It cannot be even build anymore
@@ -55,7 +62,8 @@ jobs:
         run: docker run -v $(pwd)/to_build:/work haberlerm/docker-jekyll-asciidoctor jekyll build --verbose --trace --config _config.yml,_config_devel.yml
 
       - name: Print newly created files
-        run: ls -R to_build/_site -print1
+        run: ls -R _site -print1
+        working-directory: ./to_build
 
       - name: Delete all files from Target
         run: find . -depth -not \( -path "./.git" -or -path "./.github" -or -path "." -or -path "./.git/*" -or -path "./.github/*" \) -print0 | xargs -0 -t -I '{}' rm  -d '{}'
@@ -66,10 +74,6 @@ jobs:
 
       - name: Create commit
         run: |
-          git config --local user.email "$authormail"
-          git config --local user.name "$authorname"
-          echo "Author's name for the commit set to $authorname"
-          echo "Author's mail for the commit set to $authormail"
           git add --all
           git commit -m "SHA causing build ${{ github.event.client_payload.SHA }}"
         working-directory: ./target
