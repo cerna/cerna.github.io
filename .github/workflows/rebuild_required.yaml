@@ -30,6 +30,17 @@ jobs:
           echo ::set-env name=authormail::$(git log --format='%ae' -n 2 ${{ github.event.after }})
           echo ::set-env name=authorname::$(git log --format='%an' -n 2 ${{ github.event.after }})
           cd ..
+        
+      - name: Git log
+        run: |
+          cd to_build
+          git log
+          cd ..
+      
+      - name : GITHUB CONTEXT
+        env: 
+          GITHUB_CONTEXT: ${{ toJson(github) }} 
+        run: echo "$GITHUB_CONTEXT"
 
       # Running the commands in ubuntu-master and not in Docker container because
       # of the age of the container -> It cannot be even build anymore
