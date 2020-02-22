@@ -8,13 +8,15 @@ jobs:
   myEvent:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkou the change from Machinekit-docs
+      - name: Checkout the change from Machinekit-docs
         uses: actions/checkout@v2
         with:
           repository: cerna/cerna-testing-actions
           ref: ${{ github.event.client_payload.ref }}
           path: to_build
-      - run: echo ${{ github.event.client_payload.sha }}
+
+      - name: Git SHA on which is the build requested
+        run: echo ${{ github.event.client_payload.sha }}
 
       - name: Checkout this repository (GP)
         uses: actions/checkout@v2
