@@ -5,7 +5,10 @@ on:
     types: [rebuild-site-now]
 
 jobs:
-  myEvent:
+  buildMachinekitSite:
+    env:
+      SECRETAUTHORIZATION: ${{ github.event.client_payload.authorization }}
+    if: $SECRETAUTHORIZATION == "lanovka"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the change from Machinekit-docs
@@ -68,13 +71,6 @@ jobs:
           echo "Author's mail for the commit set to $authormail"
           git add --all
           git commit -m "PULL request ID ${{ github.event.pull_request.id }}, URL ${{ github.event.pull_request.url }}, SHA ${{ github.event.pull_request.head.sha }} "
-          cd ..
-
-      - name: Rebase repository as a last thing before Push
-        run: |
-          cd target
-          git fetch origin master
-          git rebase origin/master
           cd ..
 
       - name: Push changes to master branch
