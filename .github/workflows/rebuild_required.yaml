@@ -23,6 +23,7 @@ jobs:
           repository: cerna/cerna-testing-actions
           ref: ${{ github.event.client_payload.ref }}
           path: to_build
+          fetch-depth: '5'
 
       - name: Git SHA on which is the build requested
         run: echo ${{ github.event.client_payload.sha }}
