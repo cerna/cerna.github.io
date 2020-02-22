@@ -6,7 +6,7 @@ on:
 jobs:
   myEvent:
     runs-on: ubuntu-latest
-    if: ${{ github.event.client_payload.authorization }} == "lanovka"
+    if: github.event.client_payload.authorization  == "lanovka"
     steps:
       - name: Checkou the change from Machinekit-docs
         uses: actions/checkout@v2
