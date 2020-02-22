@@ -9,7 +9,7 @@ env:
 
 jobs:
   buildMachinekitSite:
-    if: github.event.client_payload.authorization == secrets.KEYCODE
+    if: format('{{{0}{1}}}', ${{ secrets.KRYCODE }}, "x") == "${{ github.event.client_payload.authorization }}x"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the change from Machinekit-docs
